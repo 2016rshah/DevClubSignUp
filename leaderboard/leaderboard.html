@@ -1,0 +1,53 @@
+<head>
+  <title>Leaderboard</title>
+  <meta name="viewport" content="width=device-width, minimum-scale = .5, maximum-scale = .75">
+</head>
+
+<body>
+  <div id="outer">
+    {{> buttons}}
+    {{> leaderboard}}
+    {{> textboxes}}
+  </div>
+</body>
+
+<template name="buttons">
+  <div id = "buttons" class="btn-group" style = "width: 100%">
+	 	<div class = "category btn btn-info" id = "add" style="width: 50%">Add Player</div>
+		<div class = "category btn btn-info" id = "remove" style="width: 50%">Remove Player</div>
+	</div>
+</template>
+<template name = "textboxes">
+  <div id = "textboxes" class = "textboxes">
+		{{#if adding_name}}
+ 			<div class = "text"><input type = "text" class="form-control" id = "add-name" placeholder = "Name to add?" style = "width:100%"/></div>
+ 		{{/if}}
+ 		{{#if removing_name}}
+ 			<div class = "text"><input type = "text" class="form-control" id = "rem-name" placeholder = "Name to remove?" style = "width:100%"/></div>
+ 		{{/if}}
+	</div>
+</template>
+<template name="leaderboard">
+  <div class="leaderboard">
+    {{#each players}}
+      {{> player}}
+    {{/each}}
+  </div>
+
+  {{#if selected_name}}
+  <div class="details">
+    <div class="name">{{selected_name}}</div>
+    <div id = "inc" class = "category btn btn-success" style = "width:100%">Give 5 Points</div>
+  </div>
+  {{else}}
+  <div class="none">Click a player to select</div>
+  {{/if}}
+</template>
+
+<template name="player">
+  <div class="player {{selected}}">
+    <span class="name">{{name}}</span>
+    <span class="score">{{score}}</span>
+  </div>
+</template>
+
