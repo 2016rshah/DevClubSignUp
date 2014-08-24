@@ -4,6 +4,7 @@
 </head>
 
 <body>
+  {{> signIn}}
   <div id="outer">
     {{> buttons}}
     {{> leaderboard}}
@@ -48,6 +49,18 @@
   <div class="player {{selected}}">
     <span class="name">{{name}}</span>
     <span class="score">{{score}}</span>
+  </div>
+</template>
+
+<template name = "signIn">
+          <!--<ul class="nav pull-right">-->
+          <!--  <li>-->
+          <!--    {{> loginButtons}}-->
+          <!--  </li>-->
+          <!--</ul>-->
+  
+  <div style = "padding:20px">
+    {{> loginButtons}}  
   </div>
 </template>
 

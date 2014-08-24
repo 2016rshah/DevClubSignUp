@@ -3,14 +3,15 @@ function focusText(i, val){
       i.value = val?val:"";
       i.select();
   }
+Accounts.ui.config({
+   passwordSignupFields: 'USERNAME_ONLY'
+});
 
 
-if (Meteor.isClient) {
-    
-    
+
     Session.set("adding_name", false);
     Session.set("removing_name", false);
-    Template.textboxes.removing_name = function(){
+  Template.textboxes.removing_name = function(){
     return Session.equals('removing_name', true);
   };
   Template.textboxes.adding_name = function(){
@@ -31,7 +32,7 @@ if (Meteor.isClient) {
 
   Template.leaderboard.events({
     'click #inc': function () {
-      Players.update(Session.get("selected_player"), {$inc: {score: 5}});
+      Meteor.call("incScore", Session.get("selected_player"), 5);
     }
   });
   Template.player.events({
@@ -54,7 +55,11 @@ if (Meteor.isClient) {
   Template.textboxes.events({
     'keyup #add-name':function(e, t){
         if(e.which === 13){
-            Players.insert({name:String(e.target.value || "JOHN DOE"), score: Math.floor(Random.fraction()*10)*5});
+          var n = String(e.target.value || "JOHN DOE");
+          Meteor.call("addName", n, function(error , questionId){
+            console.log('added name with Id .. '+questionId);
+          });
+            
             Session.set('adding_name', false);
         }
     },
@@ -63,17 +68,9 @@ if (Meteor.isClient) {
         {
           var catVal = String(e.target.value || "");
           if(catVal){
-            if(typeof Players.find({name:catVal}).fetch()[0] !== "undefined")
-            {
-              var id = Players.find({name:catVal}).fetch()[0]._id;
-              Players.remove(id);
-            }
-            else{
-              console.log("Doesn't exist");
-            }
-            Session.set('removing_name', false);
+            Meteor.call("remName", catVal);
+            Session.set('removing_name', false); 
           }
         }
       }
   });
-}
